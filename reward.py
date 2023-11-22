@@ -7,7 +7,7 @@ from compiler.terminal_compiler import TerminalCompiler
 import sys
 from parser import DFG_python,DFG_java,DFG_ruby,DFG_go,DFG_php,DFG_javascript,DFG_csharp
 sys.path.insert(0, '/home/grads/parshinshojaee/trl_code/trl_code/rl_code_repo/CodeBLEU/')
-from calc_code_bleu import calc_code_bleu
+from CodeBLEU import calc_code_bleu
 
 
 
@@ -124,8 +124,8 @@ def get_reward(lang, code_ids=None,code_ref_ids=None,gold_ids=None, tokenizer=No
         _, _, did_compile = compilation[i]
         reward = 1 if did_compile else -1
         
-        ast_match = calc_code_bleu([[codes_gold[i]]], [codes[i]], lang, keywords_dir)[2]
-        dfg_match = calc_code_bleu([[codes_gold[i]]], [codes[i]], lang, keywords_dir)[3]
+        ast_match = calc_code_bleu.calc_code_bleu([[codes_gold[i]]], [codes[i]], lang, keywords_dir)[2]
+        dfg_match = calc_code_bleu.calc_code_bleu([[codes_gold[i]]], [codes[i]], lang, keywords_dir)[3]
 
         rewards[i, min(eos_positions[i],max_len-1)] = reward + ast_match + dfg_match
         compile_batch += reward
