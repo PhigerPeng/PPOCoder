@@ -5,7 +5,7 @@ __all__ = ['extract_structure','flatten_dict', 'stack_dicts', 'add_suffix', 'pad
 # Cell
 import torch
 import torch.nn.functional as F
-import collections
+from collections.abc import Mapping
 import numpy as np
 from tqdm import tqdm
 from parser import (tree_to_token_index,
