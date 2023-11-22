@@ -119,11 +119,11 @@ ppo_config = {"batch_size": args.train_batch_size, 'eos_token_id': tokenizer.eos
 ppo_trainer = PPOTrainer(model, model_ref, **ppo_config)
 
 #load features
-train_examples = read_examples(args.train_filename, args)
+train_examples = read_examples(train_filename, args)
 train_features = convert_examples_to_features(train_examples, tokenizer, args, stage='train')
-dev_examples = read_examples(args.dev_filename, args)
+dev_examples = read_examples(dev_filename, args)
 dev_features = convert_examples_to_features(dev_examples, tokenizer, args, stage='train')
-test_examples = read_examples(args.test_filename, args)
+test_examples = read_examples(test_filename, args)
 test_features = convert_examples_to_features(test_examples, tokenizer, args, stage='train')
 
 
@@ -204,7 +204,7 @@ for ep in range(args.train_epochs):
   
             reward,mean_rate,mean_ast_match,mean_dfg_match, num_errors,num_errors_ref, num_nodes,num_nodes_ref  = get_reward(lang = args.l2, code_ids=response_ids,code_ref_ids=response_ids_ref, gold_ids=target_ids, tokenizer=tokenizer)
             
-            total_rewards += sum([reward.sum(axis=-1).tolist()])
+            total_rewards += sum(reward.sum(axis=-1).tolist())
             total_nerrors += sum(num_errors)
             total_nnodes += sum(num_nodes)
             total_nerrors_ref += sum(num_errors_ref)
@@ -234,7 +234,7 @@ for ep in range(args.train_epochs):
                         ',' + str(args.lr)+ 
                         ',' + str(ep)+ 
                         ',' + str(nsteps)+ 
-                        ',' + str(round(sum([reward.sum(axis=-1).tolist()])/len(source_ids), 4))+
+                        ',' + str(round(sum(reward.sum(axis=-1).tolist())/len(source_ids), 4))+
                         ',' + str(round(sum(num_errors)/len(source_ids), 4))+
                         ',' + str(round(sum(num_errors_ref)/len(source_ids), 4))+
                         ',' + str(round(sum(num_nodes)/len(source_ids), 4))+
